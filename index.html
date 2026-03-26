@@ -59,40 +59,41 @@ body {
 
 <script>
 
-// 🔥 DATOS (PRUEBA SOLO CON 1 CANCIÓN BIEN)
+// 🔥 CANCIONES DE PRUEBA (estas están bien)
 const tracks = {
     1: {
-        spotify: "https://open.spotify.com/intl-es/track/6ZQgooEk8PvsLxedYaT6Oa?si=af4583271e874c34",
+        spotify: "https://open.spotify.com/track/6ZQgooEk8PvsLxedYaT6Oa",
         apple: "https://music.apple.com/es/album/a-mi-manera-comme-dhabitude/1512944635?i=1512944831"
+    },
+    2: {
+        spotify: "https://open.spotify.com/track/1bljleDhx8PmXMYUIOVImS",
+        apple: "https://music.apple.com/es/album/against-all-odds/22552146?i=22552143"
     }
 };
 
-// 👉 Leer ID UNA VEZ y fijarlo
+// 👉 Leer ID
 const urlParams = new URLSearchParams(window.location.search);
 const trackId = parseInt(urlParams.get("id"), 10);
 
-// Validación fuerte
+// Validación
 if (!trackId || !tracks[trackId]) {
-    document.body.innerHTML = "<h1>Error: ID no válido</h1>";
-    throw new Error("ID inválido");
+    document.body.innerHTML = "<h1>Error: canción no encontrada</h1>";
 }
 
-// 👉 Guardar canción fija (NO cambia nunca)
+// Canción fija
 const currentTrack = tracks[trackId];
 
-// 👉 BOTÓN PLAY
+// ▶️ BOTÓN PRINCIPAL
 document.getElementById("playBtn").addEventListener("click", function() {
 
-    // Mostrar botones
     document.getElementById("buttons").style.display = "block";
 
-    // Abrir canción correcta
     const url = currentTrack.spotify || currentTrack.apple;
     window.open(url, "_blank");
 
 });
 
-// 👉 BOTONES DIRECTOS
+// BOTONES
 document.getElementById("spotifyBtn").addEventListener("click", function() {
     if (currentTrack.spotify) {
         window.open(currentTrack.spotify, "_blank");
