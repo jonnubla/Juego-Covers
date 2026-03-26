@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +18,6 @@
       flex-direction: column;
     }
 
-    /* BOTÓN PLAY */
     .play-btn {
       width: 120px;
       height: 120px;
@@ -29,14 +29,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.1s ease;
     }
 
-    .play-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* BOTONES PLATAFORMA */
     .platform-btn {
       width: 180px;
       padding: 12px;
@@ -45,11 +39,6 @@
       font-size: 16px;
       border: none;
       cursor: pointer;
-      transition: transform 0.1s ease;
-    }
-
-    .platform-btn:active {
-      transform: scale(0.95);
     }
 
     .spotify {
@@ -60,7 +49,6 @@
     .apple {
       background-color: #FA243C;
       color: white;
-      border: 2px solid #ffffff33;
     }
 
     .text {
@@ -80,37 +68,55 @@
 
   <div class="text">Pulsa para escuchar</div>
 
-  <script src="./Juego-Covers/tracks.js"></script>
+  <!-- CARGA CORRECTA DEL ARCHIVO -->
+  <script src="/Juego-Covers/tracks.js"></script>
 
+  <!-- LÓGICA CORREGIDA -->
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id"));
+    window.onload = function() {
 
-    const track = tracks.find(t => t.id === id);
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get("id"));
 
-    function play() {
-      if (!track) {
-        alert("Track no encontrado");
-        return;
+      const track = tracks.find(t => t.id === id);
+
+      function play() {
+        if (!track) {
+          alert("Track no encontrado");
+          return;
+        }
+
+        if (track.spotify) {
+          window.location.href = track.spotify;
+        } else if (track.apple) {
+          window.location.href = track.apple;
+        } else {
+          alert("No hay enlace disponible");
+        }
       }
-      window.location.href = track.spotify;
-    }
 
-    function openSpotify() {
-      if (!track) {
-        alert("Track no encontrado");
-        return;
+      function openSpotify() {
+        if (!track || !track.spotify) {
+          alert("Spotify no disponible");
+          return;
+        }
+        window.location.href = track.spotify;
       }
-      window.location.href = track.spotify;
-    }
 
-    function openApple() {
-      if (!track) {
-        alert("Track no encontrado");
-        return;
+      function openApple() {
+        if (!track || !track.apple) {
+          alert("Apple Music no disponible");
+          return;
+        }
+        window.location.href = track.apple;
       }
-      window.location.href = track.apple;
-    }
+
+      // MUY IMPORTANTE: conectar botones
+      window.play = play;
+      window.openSpotify = openSpotify;
+      window.openApple = openApple;
+
+    };
   </script>
 
 </body>
