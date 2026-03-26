@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Pista</title>
+
 <style>
 body {
     margin: 0;
     background: black;
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,8 +23,8 @@ body {
     height: 120px;
     border-radius: 50%;
     background: white;
-    border: none;
     font-size: 40px;
+    border: none;
     cursor: pointer;
 }
 .buttons {
@@ -33,31 +34,24 @@ body {
 .btn {
     display: block;
     margin: 10px auto;
-    padding: 12px 30px;
+    padding: 12px 25px;
     border-radius: 20px;
     border: none;
-    font-size: 16px;
     cursor: pointer;
 }
-.spotify {
-    background: #1DB954;
-    color: white;
-}
-.apple {
-    background: #FA243C;
-    color: white;
-}
+.spotify { background: #1DB954; color: white; }
+.apple { background: #FA243C; color: white; }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <button class="play" onclick="play()">▶</button>
+    <button class="play" id="playBtn">▶</button>
 
     <div class="buttons" id="buttons">
-        <button class="btn spotify" onclick="openSpotify()">Spotify</button>
-        <button class="btn apple" onclick="openApple()">Apple Music</button>
+        <button class="btn spotify" id="spotifyBtn">Spotify</button>
+        <button class="btn apple" id="appleBtn">Apple Music</button>
     </div>
 
     <p style="opacity:0.5;">Pulsa para escuchar</p>
@@ -65,54 +59,51 @@ body {
 
 <script>
 
-// 🔥 TUS CANCIONES (solo ejemplo, luego metemos todas)
+// 🔥 DATOS (PRUEBA SOLO CON 1 CANCIÓN BIEN)
 const tracks = {
     1: {
         spotify: "https://open.spotify.com/intl-es/track/6ZQgooEk8PvsLxedYaT6Oa?si=af4583271e874c34",
         apple: "https://music.apple.com/es/album/a-mi-manera-comme-dhabitude/1512944635?i=1512944831"
-    },
-    2: {
-        spotify: "https://open.spotify.com/intl-es/track/xxxxxxxx",
-        apple: "https://music.apple.com/es/album/xxxxxxxx"
     }
 };
 
-// 🔑 Leer ID correctamente UNA VEZ
-const params = new URLSearchParams(window.location.search);
-const trackId = parseInt(params.get("id"), 10);
+// 👉 Leer ID UNA VEZ y fijarlo
+const urlParams = new URLSearchParams(window.location.search);
+const trackId = parseInt(urlParams.get("id"), 10);
 
-// Validación
+// Validación fuerte
 if (!trackId || !tracks[trackId]) {
-    document.body.innerHTML = "<h1>Error: canción no encontrada</h1>";
+    document.body.innerHTML = "<h1>Error: ID no válido</h1>";
+    throw new Error("ID inválido");
 }
 
-// Guardamos track fijo
-const track = tracks[trackId];
+// 👉 Guardar canción fija (NO cambia nunca)
+const currentTrack = tracks[trackId];
 
-// ▶️ BOTÓN PRINCIPAL
-function play() {
+// 👉 BOTÓN PLAY
+document.getElementById("playBtn").addEventListener("click", function() {
+
+    // Mostrar botones
     document.getElementById("buttons").style.display = "block";
 
-    // Abre directamente (Spotify si hay, si no Apple)
-    if (track.spotify) {
-        window.open(track.spotify, "_blank");
-    } else {
-        window.open(track.apple, "_blank");
-    }
-}
+    // Abrir canción correcta
+    const url = currentTrack.spotify || currentTrack.apple;
+    window.open(url, "_blank");
 
-// BOTONES
-function openSpotify() {
-    if (track.spotify) {
-        window.open(track.spotify, "_blank");
-    }
-}
+});
 
-function openApple() {
-    if (track.apple) {
-        window.open(track.apple, "_blank");
+// 👉 BOTONES DIRECTOS
+document.getElementById("spotifyBtn").addEventListener("click", function() {
+    if (currentTrack.spotify) {
+        window.open(currentTrack.spotify, "_blank");
     }
-}
+});
+
+document.getElementById("appleBtn").addEventListener("click", function() {
+    if (currentTrack.apple) {
+        window.open(currentTrack.apple, "_blank");
+    }
+});
 
 </script>
 
