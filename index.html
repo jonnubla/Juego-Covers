@@ -1,1 +1,56 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reproductor</title>
+</head>
+
+<body style="text-align:center; margin-top:50px; font-family:sans-serif;">
+
+  <h1>▶️</h1>
+
+  <button onclick="play()">▶️ Play</button>
+  <br><br>
+  <button onclick="openSpotify()">Spotify</button>
+  <button onclick="openApple()">Apple Music</button>
+
+  <!-- CONEXIÓN AL ARCHIVO -->
+  <script src="tracks.js"></script>
+
+  <script>
+    // 1. Leer ID desde la URL (?id=1)
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"));
+
+    // 2. Buscar canción EXACTA
+    const track = tracks.find(t => t.id === id);
+
+    // 3. Botón principal
+    function play() {
+      if (!track) {
+        alert("Track no encontrado");
+        return;
+      }
+      window.location.href = track.spotify;
+    }
+
+    function openSpotify() {
+      if (!track) {
+        alert("Track no encontrado");
+        return;
+      }
+      window.location.href = track.spotify;
+    }
+
+    function openApple() {
+      if (!track) {
+        alert("Track no encontrado");
+        return;
+      }
+      window.location.href = track.apple;
+    }
+  </script>
+
+</body>
+</html>
