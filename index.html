@@ -1,32 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Reproductor</title>
+
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    .play-btn {
+      font-size: 80px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .platform-btn {
+      display: block;
+      width: 220px;
+      margin: 15px auto;
+      padding: 12px;
+      border-radius: 25px;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .spotify {
+      background-color: #1DB954;
+      color: black;
+      border: none;
+    }
+
+    .apple {
+      background-color: white;
+      color: black;
+      border: none;
+    }
+  </style>
 </head>
 
-<body style="text-align:center; margin-top:50px; font-family:sans-serif;">
+<body>
 
-  <h1>▶️</h1>
+  <!-- BOTÓN GRANDE -->
+  <button class="play-btn" onclick="play()">▶️</button>
 
-  <button onclick="play()">▶️ Play</button>
-  <br><br>
-  <button onclick="openSpotify()">Spotify</button>
-  <button onclick="openApple()">Apple Music</button>
+  <!-- BOTONES PLATAFORMA -->
+  <button class="platform-btn spotify" onclick="openSpotify()">Escuchar en Spotify</button>
+  <button class="platform-btn apple" onclick="openApple()">Escuchar en Apple Music</button>
 
-  <!-- CONEXIÓN AL ARCHIVO -->
   <script src="tracks.js"></script>
 
   <script>
-    // 1. Leer ID desde la URL (?id=1)
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"));
 
-    // 2. Buscar canción EXACTA
     const track = tracks.find(t => t.id === id);
 
-    // 3. Botón principal
     function play() {
       if (!track) {
         alert("Track no encontrado");
