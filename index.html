@@ -2,13 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pista</title>
-
 <style>
 body {
     margin: 0;
-    background: #0a0a0a;
+    background: black;
     color: white;
     font-family: Arial, sans-serif;
     display: flex;
@@ -16,86 +14,106 @@ body {
     align-items: center;
     height: 100vh;
 }
-.player {
+.container {
     text-align: center;
 }
-.play-btn {
+.play {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     background: white;
-    color: black;
-    font-size: 50px;
     border: none;
+    font-size: 40px;
+    cursor: pointer;
 }
-.links {
-    margin-top: 25px;
+.buttons {
+    margin-top: 20px;
     display: none;
 }
-.links.show {
-    display: block;
-}
-.link-btn {
+.btn {
     display: block;
     margin: 10px auto;
-    padding: 10px 20px;
-    background: #1db954;
+    padding: 12px 30px;
     border-radius: 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+.spotify {
+    background: #1DB954;
     color: white;
-    text-decoration: none;
-    width: 200px;
 }
 .apple {
-    background: #fa243c;
-}
-.hint {
-    margin-top: 20px;
-    font-size: 12px;
-    color: #666;
+    background: #FA243C;
+    color: white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="player">
-    <button class="play-btn" onclick="reveal()">▶</button>
+<div class="container">
+    <button class="play" onclick="play()">▶</button>
 
-    <div id="links" class="links">
-        <a id="spotify" class="link-btn" target="_blank">Spotify</a>
-        <a id="apple" class="link-btn apple" target="_blank">Apple Music</a>
+    <div class="buttons" id="buttons">
+        <button class="btn spotify" onclick="openSpotify()">Spotify</button>
+        <button class="btn apple" onclick="openApple()">Apple Music</button>
     </div>
 
-    <div class="hint">Pulsa para escuchar</div>
+    <p style="opacity:0.5;">Pulsa para escuchar</p>
 </div>
 
 <script>
 
-// ⚠️ DE MOMENTO SOLO UNA CANCIÓN DE PRUEBA
+// 🔥 TUS CANCIONES (solo ejemplo, luego metemos todas)
 const tracks = {
     1: {
-        spotify: "https://open.spotify.com/track/6ZQgooEk8PvsLxedYaT6Oa",
+        spotify: "https://open.spotify.com/intl-es/track/6ZQgooEk8PvsLxedYaT6Oa?si=af4583271e874c34",
         apple: "https://music.apple.com/es/album/a-mi-manera-comme-dhabitude/1512944635?i=1512944831"
+    },
+    2: {
+        spotify: "https://open.spotify.com/intl-es/track/xxxxxxxx",
+        apple: "https://music.apple.com/es/album/xxxxxxxx"
     }
 };
 
+// 🔑 Leer ID correctamente UNA VEZ
 const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const trackId = parseInt(params.get("id"), 10);
 
-function reveal() {
-    const track = tracks[id];
+// Validación
+if (!trackId || !tracks[trackId]) {
+    document.body.innerHTML = "<h1>Error: canción no encontrada</h1>";
+}
 
-    if (!track) return;
+// Guardamos track fijo
+const track = tracks[trackId];
 
-    document.getElementById("links").classList.add("show");
+// ▶️ BOTÓN PRINCIPAL
+function play() {
+    document.getElementById("buttons").style.display = "block";
 
+    // Abre directamente (Spotify si hay, si no Apple)
     if (track.spotify) {
-        document.getElementById("spotify").href = track.spotify;
+        window.open(track.spotify, "_blank");
+    } else {
+        window.open(track.apple, "_blank");
+    }
+}
+
+// BOTONES
+function openSpotify() {
+    if (track.spotify) {
         window.open(track.spotify, "_blank");
     }
-
-    document.getElementById("apple").href = track.apple;
 }
+
+function openApple() {
+    if (track.apple) {
+        window.open(track.apple, "_blank");
+    }
+}
+
 </script>
 
 </body>
