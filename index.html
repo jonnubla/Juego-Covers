@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pista</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0a0a0a;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.player {
+    text-align: center;
+}
+.play-btn {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: white;
+    color: black;
+    font-size: 50px;
+    border: none;
+}
+.links {
+    margin-top: 25px;
+    display: none;
+}
+.links.show {
+    display: block;
+}
+.link-btn {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background: #1db954;
+    border-radius: 20px;
+    color: white;
+    text-decoration: none;
+    width: 200px;
+}
+.apple {
+    background: #fa243c;
+}
+.hint {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="player">
+    <button class="play-btn" onclick="reveal()">▶</button>
+
+    <div id="links" class="links">
+        <a id="spotify" class="link-btn" target="_blank">Spotify</a>
+        <a id="apple" class="link-btn apple" target="_blank">Apple Music</a>
+    </div>
+
+    <div class="hint">Pulsa para escuchar</div>
+</div>
+
+<script>
+
+// ⚠️ DE MOMENTO SOLO UNA CANCIÓN DE PRUEBA
+const tracks = {
+    1: {
+        spotify: "https://open.spotify.com/track/6ZQgooEk8PvsLxedYaT6Oa",
+        apple: "https://music.apple.com/es/album/a-mi-manera-comme-dhabitude/1512944635?i=1512944831"
+    }
+};
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+function reveal() {
+    const track = tracks[id];
+
+    if (!track) return;
+
+    document.getElementById("links").classList.add("show");
+
+    if (track.spotify) {
+        document.getElementById("spotify").href = track.spotify;
+        window.open(track.spotify, "_blank");
+    }
+
+    document.getElementById("apple").href = track.apple;
+}
+</script>
+
+</body>
+</html>
